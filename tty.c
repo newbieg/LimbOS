@@ -44,9 +44,6 @@ uint16_t vga_entry(unsigned char text, uint8_t color)
 	return (uint16_t) text | (uint16_t) color << 8;
 }
 
-
-
-
 // call once to initialize the tty terminal with a blank screen
 void vga_init()
 {
@@ -141,7 +138,15 @@ void vga_setColor(uint16_t pallet)
 
 void vga_write(const char* data, size_t length)
 {
-	
+	for(int i = 0; i < length; i ++)
+	{
+		vga_putchar(data[i];
+	}	
+}
+
+void vga_writeString(const char* str)
+{
+	vga_write(str, strlen(str));
 }
 
 
