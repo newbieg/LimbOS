@@ -20,7 +20,6 @@ stack_top:
 .global _start
 .type _start, @function
 
-; the entry point for our kernel after the grub multiboot;
 _start:
 
 mov $stack_top, %esp
@@ -29,9 +28,9 @@ call kernel_main
 mov $stack_top, %esp
 call kernel_main
 
-	cli ; clear interupts
-	hlt ; tell CPU to halt, uses less power... Will not resume unless interupts occur
+	cli 
+	hlt 
 to_here:
-	jmp to_here ; this is our infinite loop should interupts be turned back on. 
+	jmp to_here  
 
 .size _start, . - _start 
