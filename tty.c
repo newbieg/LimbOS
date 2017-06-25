@@ -17,27 +17,6 @@ const size_t VGA_WIDTH = 80;
 const size_t VGA_HEIGHT = 25;
 
 
-enum vga_color
-{
-	VGA_COLOR_BLACK, 
-	VGA_COLOR_BLUE,
-	VGA_COLOR_GREEN,
-	VGA_COLOR_CYAN,
-	VGA_COLOR_RED,
-	VGA_COLOR_MAGENTA,
-	VGA_COLOR_BROWN,
-	VGA_COLOR_LIGHT_GREY,
-	VGA_COLOR_DARK_GREY,
-	VGA_COLOR_LIGHT_BLUE,
-	VGA_COLOR_LIGHT_GREEN,
-	VGA_COLOR_LIGHT_CYAN,
-	VGA_COLOR_LIGHT_RED,
-	VGA_COLOR_LIGHT_MAGENTA,
-	VGA_COLOR_LIGHT_BROWN,
-	VGA_COLOR_WHITE,
-
-};
-
 
 uint8_t vga_displayColor(enum vga_color foreground, enum vga_color background)
 {
@@ -172,7 +151,11 @@ void vga_writeDec(const int number)
 
 void vga_writeHex(const int number);
 
-
+void vga_logEntry(char* label, char* string)
+{
+	vga_writeString(label);
+	vga_writeString(string);
+}
 
 
 
