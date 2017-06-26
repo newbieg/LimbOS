@@ -32,7 +32,6 @@ uint16_t vga_entry(unsigned char text, uint8_t color)
 void vga_init()
 {
 	vga_cls();	
-	terminal_buffer = (uint16_t *) 0Xb8000;
 	terminal_x = 0;
 	terminal_y = 0;
 }
@@ -52,6 +51,7 @@ void vga_cls()
 		const size_t index = j * VGA_HEIGHT + i;
 		terminal_buffer[index] = vga_entry(' ', terminal_color);
 	}
+	terminal_buffer = (uint16_t *) 0XB8000;
 }
 
 // print a single character data to the screen at pos 
@@ -136,6 +136,7 @@ void vga_writeDec(const int number)
 		text[0] = '-';
 		count ++;
 	}
+	int start = count;
 	tempNum = abs(tempNum);
 	while(tempNum > 0)
 	{
@@ -144,6 +145,15 @@ void vga_writeDec(const int number)
 		tempNum /= 10;
 		count ++;
 	}
+	size_t len = strlen(text) - 1;
+	for(size_t i = start; i < len/2; i ++)
+	{
+		char temp = text[i];
+		text[i] = text[len - i];
+		text[len -i] = temp;
+		
+	}
+
 	text[count] = '\0';
 	vga_writeString(text);
 }
