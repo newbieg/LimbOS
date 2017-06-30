@@ -13,7 +13,7 @@ all:
 	$(CC) $(CFILEFLAGS) src/gdt.c -o gdt.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
 	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o -lgcc
-	rm *.o
+	-rm *.o *.h.gch
 	cp myos.bin isodir/boot
 	cp grub.cfg isodir/boot/grub/
 	grub2-mkrescue -o myos.iso isodir
@@ -31,6 +31,10 @@ build:
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
 	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o -lgcc
 
+iso:
+	cp myos.bin isodir/boot
+	cp grub.cfg isodir/boot/grub/
+	grub2-mkrescue -o myos.iso isodir
+
 clean:
-	rm *.o
-	rm *.h.gch
+	-rm *.o *.h.gch

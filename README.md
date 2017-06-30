@@ -10,10 +10,17 @@ Only major advancements will merit a bump in the version name. Currently this OS
 
 
 ## Build Instructions:
-The Makefile is written to automate the build and run of the kernel, however there is some setup on your part. 
+The Makefile is written to automate the build and run of the kernel, however there is some setup on your part (it does not install missing tools). 
 To use the Makefile, follow word-for-word the tutorial on creating a cross-compiler found here at http://wiki.osdev.org/GCC_Cross-Compiler - and add it to your environment PATH variable.
 
-Also make sure that Qemu is installed on your system.
+You may need to also build and install other third party software such as gnu's bin-utils as found in the above tutorial.
+
+Also make sure that Qemu is installed on your system as that's the Makefile's chosen VM.
 
 Currently the OS does not have the ability to write anything to file, so it's a recomendation that it be built as an iso file as in the Makefile process. As an ISO you can use dd on it to write it to a usb drive, but only do so if you know the whole process and understand that it will wipe all previous information on that drive.
+
+
+$ cd OSDEV01/;
+$ make; 
+
 
