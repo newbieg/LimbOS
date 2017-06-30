@@ -18,7 +18,7 @@ stack_top:
 
 .section .text
 .global _start
-.type _start, @function
+#.type _start, @function
 
 _start:
 
@@ -33,4 +33,36 @@ call kernel_main
 to_here:
 	jmp to_here  
 
+
+.global halt
+halt:
+	hlt
+	ret
+
+# GDT function flush will clear the old segment registers
+# from whatever Grub Multiboot has provided.
+# and then do a far-jump. Right now this is magic to me, 
+# brought to you by Bran's Tutorials though I translated them 
+# from NASM to GNU-as.
+
+.globl gdt_flush
+.type gdt_flush, @function
+
+gdt_flush:
+	cli
+	movl 4(%esp), %eax
+	lgdt (%eax)
+	movw $0x10, %ax
+/* The 'issue' starts here */
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	movw %ax, %ss
+	ljmp $0x08, $flush
+
+flush:
+	ret
+
 .size _start, . - _start 
+
