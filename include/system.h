@@ -21,9 +21,11 @@ void* memcpy(char * dest, char * src, size_t length);
 // GDT
 
 // Set up a GDT entry.
-void gdt_set_gate(int num, unsigned long base, unsigned long limit, unsigned char access, unsigned char gran);
+void gdt_set_gate(int num, unsigned int base, unsigned int limit, unsigned char access, unsigned char gran);
 
 // Called once to set up the system GDT.
 void gdt_install();
+
+void writeGDTSize();
 
 

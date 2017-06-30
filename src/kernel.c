@@ -42,18 +42,17 @@ int kernel_main()
 	//*/
 	
 
-	vga_writeString("\nsizeof(short) = ");
+	vga_writeString("\nsizeof(unsigned short) = ");
 	vga_writeDec(sizeof(unsigned short));
-
-	vga_writeString("\nsizeof(short) = ");
-	vga_writeDec(sizeof(unsigned short));
-	vga_writeString("\nsizeof(int) = ");
-	vga_writeDec(sizeof(int));
-	vga_writeString("\nsizeof(char) = ");
-	vga_writeDec(sizeof(char));
-	vga_writeString("\nsizeof(long) = ");
-	vga_writeDec(sizeof(long));
+	vga_writeString("\nsizeof(unsigned int) = ");
+	vga_writeDec(sizeof(unsigned int));
+	vga_writeString("\nsizeof(unsigned char) = ");
+	vga_writeDec(sizeof(unsigned char));
+	vga_writeString("\nsizeof(unsigned long) = ");
+	vga_writeDec(sizeof(unsigned long));
 //	halt(); // an assembly call to hlt, 
+
+	vga_writeString("\nSize of the gdtPtr called gp = "); // should be 6, actuall sizeof is called in boot.s
 	gdt_install();
 
 	while(true) {};

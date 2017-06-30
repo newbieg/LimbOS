@@ -6,7 +6,7 @@ Currently developement is in the very basics of OS design. I am aiming for a use
 While GUI, 64 bit, and cross-compiled programs are not off the table, they are not in any way a priority with this OS.
 
 
-Only major advancements will merit a bump in the version name. Currently this OS doesn't even have a name, so we're in verion -0.0.1, as soon as it advances to having a useable CLI I'll consider taking it out of negative numbers. 
+Only major advancements will merit a bump in the version name. Currently this OS isn't yet a true Operating System, and it doesn't even have a name; therefore it's in verion -0.0.1, as soon as it advances to having a useable CLI I'll consider taking it out of negative numbers. 
 
 
 ## Build Instructions:

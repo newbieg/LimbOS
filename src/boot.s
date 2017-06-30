@@ -53,6 +53,9 @@ gdt_flush:
 	movl 4(%esp), %eax
 	lgdt (%eax)
 	movw $0x10, %ax
+
+	push 4(%esp) /* following 3 lines are for testing */
+call writeGDTSize
 /* The 'issue' starts here */
 	movw %ax, %ds
 	movw %ax, %es
