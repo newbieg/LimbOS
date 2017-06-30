@@ -9,7 +9,7 @@ While GUI, 64 bit, and cross-compiled programs are not off the table, they are n
 Only major advancements will merit a bump in the version name. Currently this OS doesn't even have a name, so we're in verion -0.0.1, as soon as it advances to having a useable CLI I'll consider taking it out of negative numbers. 
 
 
-#Build Instructions:
+## Build Instructions:
 The Makefile is written to automate the build and run of the kernel, however there is some setup on your part. 
 To use the Makefile, follow word-for-word the tutorial on creating a cross-compiler found here at http://wiki.osdev.org/GCC_Cross-Compiler - and add it to your environment PATH variable.
 
