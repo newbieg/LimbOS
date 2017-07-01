@@ -68,6 +68,7 @@ int kernel_main()
 	gdt_install();
 	idt_install();
 
+	asm volatile ("int $0x03");
 
 	return 0;
 }
