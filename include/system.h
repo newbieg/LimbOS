@@ -25,6 +25,7 @@ void* memcpy(char * dest, char * src, size_t length);
 void* memset(char* dest, const char value, size_t length);
 
 
+/* contemplating moving to gdt.h
 // GDT
 
 // Set up a GDT entry.
@@ -34,5 +35,6 @@ void gdt_set_gate(int num, unsigned int base, unsigned int limit, unsigned char 
 void gdt_install();
 
 void writeGDTSize();
+*/
 
 

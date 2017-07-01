@@ -73,5 +73,57 @@ idt_flush:
 	lidt (%eax)
 	ret
 
+.macro isr_NE p
+	.globl isr\p
+	isr\p:
+		cli
+		push 0
+		push \p
+		jmp isr_common_stub
+.endm
+
+
+.macro isr_E p
+	.globl isr\p
+	isr\p:
+		cli
+		push \p
+		jmp isr_common_stub
+.endm
+
+
+isr_NE 1
+isr_NE 2
+isr_NE 3
+isr_NE 4
+isr_NE 5
+isr_NE 6
+isr_NE 7
+isr_NE 8
+isr_NE 9
+isr_NE 10
+isr_NE 11
+isr_NE 12
+isr_NE 13
+isr_NE 14
+isr_NE 15
+isr_NE 16
+isr_NE 17
+isr_NE 18
+isr_NE 19
+isr_NE 20
+isr_NE 21
+isr_NE 22
+isr_NE 23
+isr_NE 24
+isr_NE 25
+isr_NE 26
+isr_NE 27
+isr_NE 28
+isr_NE 29
+isr_NE 30
+isr_NE 31
+isr_NE 32
+
 .size _start, . - _start 
 
