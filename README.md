@@ -1,4 +1,4 @@
-# OSDev01
+# LimbOS 0.0.2
 My own 32 bit Operating System - Rudimentary testing phase
 ##
 ## Details:
@@ -6,7 +6,7 @@ Currently developement is in the very basics of OS design. I am aiming for a use
 While GUI, 64 bit, and cross-compiled programs are not off the table, they are not in any way a priority with this OS.
 
 
-Only major advancements will merit a bump in the version name. Currently this OS isn't yet a true Operating System, and it doesn't even have a name; therefore it's in verion -0.0.1, as soon as it advances to having a useable CLI I'll consider taking it out of negative numbers. 
+Only major advancements will merit a bump in the version name. Currently this OS isn't yet a true Operating System, and it's name is somewhat descriptive of itself. It's either hanging by a limb over the void that is limbo, or it is a growing branch that is striving to improve and grow... Only the future can tell. 
 
 
 ## Build Instructions:
