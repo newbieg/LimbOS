@@ -1,3 +1,7 @@
+#ifndef SYSTEM_FUNCTSLIB_H_DEFINE
+#define SYSTEM_FUNCTSLIB_H_DEFINE
+
+
 /* A list of key functions that the kernel will need to use in order to
  * communicate with the system.
  */
@@ -38,3 +42,7 @@ void writeGDTSize();
 */
 
 
+
+
+
+#endif

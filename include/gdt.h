@@ -1,3 +1,5 @@
+#ifndef GDT_TABLE_H_DEF
+#define GDT_TABLE_H_DEF
 // GDT
 
 // Set up a GDT entry.
@@ -8,3 +10,7 @@ void gdt_install();
 
 void writeGDTSize();
 
+
+
+
+#endif

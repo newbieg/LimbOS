@@ -1,3 +1,5 @@
+#ifndef IDT_TABLE_H_DEF
+#define IDT_TABLE_H_DEF
 // Currently following tutorial: http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
 
 struct idt_entry
@@ -50,3 +52,11 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+
+
+
+
+
+
+
+#endif

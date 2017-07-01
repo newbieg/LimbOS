@@ -1,3 +1,5 @@
+#ifndef TTY_VGA_H_DEFINE
+#define TTY_VGA_H_DEFINE
 /* A collection of functions for communicating directly with the terminal.
  * Moslty functions for the output of text.
  * 
@@ -60,3 +62,6 @@ void vga_logEntry(char* label, char * string);
 
 
 
+
+
+#endif
