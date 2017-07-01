@@ -17,6 +17,14 @@ struct idt_ptr
 	unsigned int base;
 } __attribute((packed));
 
+typedef struct registers
+{
+	unsigned int ds;
+	unsigned int edi, esi, ebp, esp, ebx, edx, ecx, eax; 
+	unsigned int int_no, err_code;
+	unsigned int eip, cs, eflags, useresp, ss;
+} registers_t;
+
 
 void idt_install();
 
@@ -52,6 +60,7 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+extern void isr32();
 
 
 

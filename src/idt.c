@@ -3,6 +3,7 @@
 
 #include <system.h>
 #include <idt.h>
+#include <tty.h>
 
 extern void idt_flush(unsigned int);
 
@@ -50,6 +51,7 @@ void idt_install()
 	idt_set_gate(29, (unsigned int) isr29, 0x08, 0x8E);
 	idt_set_gate(30, (unsigned int) isr30, 0x08, 0x8E);
 	idt_set_gate(31, (unsigned int) isr31, 0x08, 0x8E);
+	idt_set_gate(32, (unsigned int) isr32, 0x08, 0x8E);
 
 	idt_flush((unsigned int) &idtpr);
 }
@@ -64,4 +66,11 @@ void idt_set_gate(unsigned char num, unsigned int base, unsigned short sel, unsi
 	idt[num].flags = flags /* | 0x60*/;
 }
 
+
+void isr_handler(registers_t reg )
+{
+	vga_writeString("Interupt Recieved");
+	vga_writeDec(reg.int_no);
+
+}
 

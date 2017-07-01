@@ -50,12 +50,11 @@ halt:
 
 gdt_flush:
 	cli
+	cld
 	movl 4(%esp), %eax
 	lgdt (%eax)
 	movw $0x10, %ax
 
-	push 4(%esp) /* following 3 lines are for testing */
-call writeGDTSize
 /* The 'issue' starts here */
 	movw %ax, %ds
 	movw %ax, %es
@@ -92,6 +91,7 @@ idt_flush:
 .endm
 
 
+isr_NE 0
 isr_NE 1
 isr_NE 2
 isr_NE 3
@@ -124,6 +124,32 @@ isr_NE 29
 isr_NE 30
 isr_NE 31
 isr_NE 32
+
+
+.extern isr_handler
+
+isr_common_stub:
+
+	movw %ax, %ds
+	push %eax
+
+	movw $0x10, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	
+call isr_handler
+	pop %eax
+
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+
+	add 8, %eax
+	sti
+	ret
 
 .size _start, . - _start 
 

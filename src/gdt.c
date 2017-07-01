@@ -6,6 +6,7 @@
 
 #include <system.h> // prototypes for gdt_install() and gdt_set_gate()
 #include <tty.h>
+#include <gdt.h>
 
 struct gdt_entry
 {
