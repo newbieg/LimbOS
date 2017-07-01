@@ -151,5 +151,10 @@ call isr_handler
 	sti
 	ret
 
+.global causeInterupt
+causeInterupt:
+	int $0x03
+	ret
+
 .size _start, . - _start 
 

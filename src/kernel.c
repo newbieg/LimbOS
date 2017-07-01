@@ -63,12 +63,11 @@ int kernel_main()
 	vga_writeDec(sizeof(unsigned long));
 //	halt(); // an assembly call to hlt, 
 
-	vga_writeString("\nSize of the gdtPtr called gp = "); // should be 6, actuall sizeof is called in boot.s
+//	vga_writeString("\nSize of the gdtPtr called gp = "); // should be 6, actuall sizeof is called in boot.s
 
-	idt_install();
 	gdt_install();
+	idt_install();
 
-	while(true) {};
 
 	return 0;
 }

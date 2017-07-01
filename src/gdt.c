@@ -8,6 +8,7 @@
 #include <tty.h>
 #include <gdt.h>
 
+/* // Placed these in header, not sure if moving back here or not...
 struct gdt_entry
 {
 	unsigned short limit_low;
@@ -25,11 +26,13 @@ struct gdt_ptr
 	unsigned int base;
 } __attribute__ ((packed));
 
+*/
+
 
 volatile struct gdt_entry gdt[3];
 volatile struct gdt_ptr gp; 
 
-extern void gdt_flush(struct gdt_ptr gp_input); // Defined in assembly: src/boot.s
+extern void gdt_flush(unsigned int castGpToInt); // Defined in assembly: src/boot.s
 
 void gdt_set_gate(int num, unsigned int base, unsigned int limit, unsigned char access, unsigned char gran)
 {
@@ -52,7 +55,7 @@ void gdt_install()
 	gdt_set_gate(1,0,0xFFFFFFFF, 0x9A, 0xCF); // data
 	gdt_set_gate(2,0,0xFFFFFFFF, 0x92, 0xCF); // code
 
-	gdt_flush(gp);
+	gdt_flush((unsigned int) &gp);
 }
 
 

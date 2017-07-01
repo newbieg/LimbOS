@@ -64,6 +64,8 @@ extern void isr32();
 
 
 
+void isr_handler(registers_t reg );
+
 
 
 
