@@ -28,6 +28,9 @@ void* memset(char* dest, const char val, size_t length)
 
 int kernel_main()
 {
+
+	gdt_install();
+	idt_install();
 	vga_init();
 	vga_writeString("Hello World");
 	vga_putchar('\n');
@@ -41,16 +44,15 @@ int kernel_main()
 
 	vga_logEntry("Log Entry:", "Happy new OS");
 
-	/*
+	asm volatile ("int $0x03");
 	vga_writeString("Testing window scrolling...");
 
-	for(int i = 0; i < 15; i ++)
+	for(int i = 0; i < 25; i ++)
 	{
 		vga_putchar('\n');
 		vga_writeDec(i);
 		
 	}
-	//*/
 	
 
 	vga_writeString("\nsizeof(unsigned short) = ");
@@ -65,10 +67,7 @@ int kernel_main()
 
 //	vga_writeString("\nSize of the gdtPtr called gp = "); // should be 6, actuall sizeof is called in boot.s
 
-	gdt_install();
-	idt_install();
 
-	asm volatile ("int $0x03");
 
 	return 0;
 }

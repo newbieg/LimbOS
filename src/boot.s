@@ -370,7 +370,7 @@ isr_NE 255
 isr_common_stub:
 
 	movw %ds, %ax
-	push %eax
+	pushl %eax
 
 	movw $0x10, %ax
 	movw %ax, %ds
@@ -380,7 +380,7 @@ isr_common_stub:
 	
 call isr_handler
 
-	pop %eax
+	popl %eax
 	movw %ax, %ds
 	movw %ax, %es
 	movw %ax, %fs

@@ -15,7 +15,7 @@ all:
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
 	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o idt.o -lgcc
 	-rm *.o *.h.gch
-	cp myos.bin isodir/boot
+	cp myos.bin isodir/boot/myos_nightly.bin
 	cp grub.cfg isodir/boot/grub/
 	grub2-mkrescue -o myos.iso isodir
 	qemu-system-i386 -cdrom myos.iso
@@ -32,6 +32,11 @@ build:
 	$(CC) $(CFILEFLAGS) src/idt.c -o idt.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
 	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o idt.o -lgcc
+
+stable: build
+	cp myos.bin isodir/boot/myos_stable.bin
+	cp grub.cfg isodir/boot/grub/
+
 
 iso:
 	cp myos.bin isodir/boot
