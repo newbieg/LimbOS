@@ -1,7 +1,7 @@
 # OSDev01
 My own 32 bit Operating System - Rudimentary testing phase
 ##
-## details:
+## Details:
 Currently developement is in the very basics of OS design. I am aiming for a useable 32 bit computer with a command line interface. 
 While GUI, 64 bit, and cross-compiled programs are not off the table, they are not in any way a priority with this OS.
 

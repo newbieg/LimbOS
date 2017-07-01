@@ -11,8 +11,9 @@ all:
 	$(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/gdt.c -o gdt.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/idt.c -o idt.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
-	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o -lgcc
+	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o idt.o -lgcc
 	-rm *.o *.h.gch
 	cp myos.bin isodir/boot
 	cp grub.cfg isodir/boot/grub/
@@ -28,8 +29,9 @@ build:
 	$(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/gdt.c -o gdt.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/idt.c -o idt.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
-	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o -lgcc
+	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o gdt.o idt.o -lgcc
 
 iso:
 	cp myos.bin isodir/boot

@@ -3,6 +3,8 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <gdt.h>
+#include <idt.h>
 
 
 void* memcpy(char * dest, char * src, size_t length)
@@ -10,6 +12,15 @@ void* memcpy(char * dest, char * src, size_t length)
 	for(size_t i = 0; i < length; i ++)
 	{
 		dest[i] = src[i];
+	}
+	return dest;
+}
+
+void* memset(char* dest, const char val, size_t length)
+{
+	for(size_t i = 0; i < length; i ++)
+	{
+		dest[i] = val;
 	}
 	return dest;
 }
@@ -53,6 +64,8 @@ int kernel_main()
 //	halt(); // an assembly call to hlt, 
 
 	vga_writeString("\nSize of the gdtPtr called gp = "); // should be 6, actuall sizeof is called in boot.s
+
+	idt_install();
 	gdt_install();
 
 	while(true) {};

@@ -18,6 +18,13 @@ extern void halt();
 void* memcpy(char * dest, char * src, size_t length);
 
 
+// void* memset(char* dest, char value, size_t length);
+// defined in kernel.c
+// loads length amount of value into dest.
+// Return: dest
+void* memset(char* dest, const char value, size_t length);
+
+
 // GDT
 
 // Set up a GDT entry.
