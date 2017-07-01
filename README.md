@@ -20,7 +20,7 @@ Also make sure that Qemu is installed on your system as that's the Makefile's ch
 Currently the OS does not have the ability to write anything to file, so it's a recomendation that it be built as an iso file as in the Makefile process. As an ISO you can use dd on it to write it to a usb drive, but only do so if you know the whole process and understand that it will wipe all previous information on that drive.
 
 
-$ cd OSDEV01;
+$ cd LimbOS;
 
 $ make; 
 
