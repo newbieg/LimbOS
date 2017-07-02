@@ -19,11 +19,6 @@ void idt_install()
 	idtpr.base = (unsigned int) & idt;
 	memset((char*) &idt, 0, sizeof(struct idt_entry) * 256);
 
-	for(int i = 0; i < 256; i ++)
-	{
-		idt_set_gate(0, (unsigned int) isr0, 0x08, 0x8E);
-
-	}
 	idt_set_gate(0, (unsigned int) isr0, 0x08, 0x8E);
 	idt_set_gate(1, (unsigned int) isr1, 0x08, 0x8E);
 	idt_set_gate(2, (unsigned int) isr2, 0x08, 0x8E);
@@ -288,18 +283,27 @@ void idt_set_gate(unsigned char num, unsigned int base, unsigned short sel, unsi
 {
 	idt[num].base_low = base & 0xFFFF;
 	idt[num].base_high = (base >> 16) & 0xFFFF;
-
 	idt[num].sellector = sel;
 	idt[num].zero = 0;
 	idt[num].flags = flags /* | 0x60*/;
 }
 
 
+ //it's suggested that this function be written in assembly... Sure, why not.
 void isr_handler(registers_t reg )
 {
-	vga_writeString("\nInterupt Recieved");
+	vga_writeString("\nInterupt Recieved: ");
 	vga_writeDec(reg.int_no);
-//	vga_putchar('\n');
+	vga_putchar('\n');
+	
+	static int count = 0;
+       count ++;
+	if(count > 6)
+	{
+		vga_writeString("ERROR: SOMEHOW AN ISR EXCEPTION SEEMS TO BE UNHANDLED AND IT MUCKING THINGS UP. STOPPING KERNEL");
+		halt();
+	}
 
 }
+
 

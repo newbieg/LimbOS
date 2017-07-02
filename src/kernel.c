@@ -44,7 +44,6 @@ int kernel_main()
 
 	vga_logEntry("Log Entry:", "Happy new OS");
 
-	asm volatile ("int $0x03");
 	vga_writeString("Testing window scrolling...");
 
 	for(int i = 0; i < 25; i ++)
@@ -53,6 +52,7 @@ int kernel_main()
 		vga_writeDec(i);
 		
 	}
+	asm volatile ("int $0x06");
 	
 
 	vga_writeString("\nsizeof(unsigned short) = ");
@@ -65,7 +65,6 @@ int kernel_main()
 	vga_writeDec(sizeof(unsigned long));
 //	halt(); // an assembly call to hlt, 
 
-//	vga_writeString("\nSize of the gdtPtr called gp = "); // should be 6, actuall sizeof is called in boot.s
 
 
 

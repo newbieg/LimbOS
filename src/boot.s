@@ -35,6 +35,31 @@ to_here:
 	jmp to_here  
 
 
+.macro PUSHALL
+	pushl %eax
+	pushl %ecx
+	pushl %edx
+	pushl %ebx
+	pushl %esp
+	pushl %ebp
+	pushl %esi
+	pushl %edi
+.endm
+
+
+.macro POPALL
+	popl %edi
+	popl %esi
+	popl %ebp
+	popl %esp
+	popl %ebx
+	popl %edx
+	popl %ecx
+	popl %eax
+.endm
+
+
+
 # use to halt the CPU in C code. Should be removed when debugging is done
 .global halt
 .type halt, @function
@@ -90,8 +115,8 @@ inb:
 	.type isr\p, @function
 	isr\p:
 		cli
-		push 0
-		push \p
+		push $0
+		push $\p
 		jmp isr_common_stub
 .endm
 
@@ -101,7 +126,7 @@ inb:
 	.type isr\p, @function
 	isr\p:
 		cli
-		push \p
+		push $(\p)
 		jmp isr_common_stub
 .endm
 
@@ -365,9 +390,11 @@ isr_NE 253
 isr_NE 254
 isr_NE 255
 
+# Defined in src/idt.c
 .extern isr_handler
 
 isr_common_stub:
+	PUSHALL
 
 	movw %ds, %ax
 	pushl %eax
@@ -386,9 +413,11 @@ call isr_handler
 	movw %ax, %fs
 	movw %ax, %gs
 
-	add 8, %esp
+	POPALL
+	add $8, %esp
 	sti
 	iret
+	ret
 
 .size _start, . - _start 
 
