@@ -294,16 +294,6 @@ void isr_handler(registers_t reg )
 {
 	vga_writeString("\nInterupt Recieved: ");
 	vga_writeDec(reg.int_no);
-	vga_putchar('\n');
-	
-	static int count = 0;
-       count ++;
-	if(count > 6)
-	{
-		vga_writeString("ERROR: SOMEHOW AN ISR EXCEPTION SEEMS TO BE UNHANDLED AND IT MUCKING THINGS UP. STOPPING KERNEL");
-		halt();
-	}
-
 }
 
 

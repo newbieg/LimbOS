@@ -115,8 +115,8 @@ inb:
 	.type isr\p, @function
 	isr\p:
 		cli
-		push $0
-		push $\p
+		pushl $0
+		pushl $\p
 		jmp isr_common_stub
 .endm
 
@@ -126,7 +126,7 @@ inb:
 	.type isr\p, @function
 	isr\p:
 		cli
-		push $(\p)
+		pushl $(\p)
 		jmp isr_common_stub
 .endm
 
