@@ -15,6 +15,10 @@
 // Currently only used for debugging purposes.
 extern void halt();
 
+
+extern unsigned char in_b(const unsigned short port);
+
+
 // void* memcpy(char* dest, char* src, size_t length);
 // defined in kernel.c
 // copies length amount of chars from src to dest.

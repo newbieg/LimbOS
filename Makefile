@@ -22,7 +22,7 @@ stable: build
 	cp grub.cfg isodir/boot/grub/
 
 iso:
-	cp myos.bin isodir/boot
+	cp myos.bin isodir/boot/myos_nightly.bin
 	cp grub.cfg isodir/boot/grub/
 	grub2-mkrescue -o myos.iso isodir
 

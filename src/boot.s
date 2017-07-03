@@ -59,7 +59,7 @@ to_here:
 .endm
 
 
-
+# void halt();
 # use to halt the CPU in C code. Should be removed when debugging is done
 .global halt
 .type halt, @function
@@ -67,6 +67,7 @@ halt:
 	hlt
 	ret
 
+# void gdt_flush((usigned int) &gdt_ptr);
 # GDT function flush will clear the old segment registers
 # from whatever Grub Multiboot has provided.
 # and then do a far-jump. Right now this is magic to me, 
@@ -92,6 +93,7 @@ gdt_flush:
 flush:
 	ret
 
+# void idt_flush(unsigned int &idt_ptr)
 # called to emplant my idt 
 .globl idt_flush
 .type idt_flush, @function
@@ -101,12 +103,21 @@ idt_flush:
 	lidt (%eax)
 	ret
 
-/*
-.globl inb
-.type inb, @function
-inb:
-	movl 4(%esp), %eax
-*/	
+
+# unsigned char inb(unsigned short port);
+.globl in_b
+.type in_b, @function
+in_b:
+	PUSHALL
+	movl %esp, %eax
+	movl %eax, %edx
+	inb %dx, %al
+	movb %al, -1(%ebp)
+	movzbl -1(%ebp), %eax
+	POPALL
+	ret
+
+	
 
 
 # the next two macros are used to shorten the process of declaring 256 isr functions below.
@@ -129,6 +140,8 @@ inb:
 		pushl $(\p)
 		jmp isr_common_stub
 .endm
+
+
 
 
 # Setting up all 256 isr functions. I probably could have been smart about this
@@ -393,8 +406,13 @@ isr_NE 255
 # Defined in src/idt.c
 .extern isr_handler
 
+
+
+# see mscro behind isr_NE and isr_E
 isr_common_stub:
 	PUSHALL
+	cli
+	cld
 
 	movw %ds, %ax
 	pushl %eax
@@ -417,7 +435,8 @@ call isr_handler
 	add $8, %esp
 	sti
 	iret
-	ret
+
+
 
 .size _start, . - _start 
 

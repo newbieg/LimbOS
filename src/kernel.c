@@ -53,6 +53,8 @@ int kernel_main()
 		
 	}
 
+	//asm volatile ("int $0x02");
+
 	vga_writeString("\nsizeof(unsigned short) = ");
 	vga_writeDec(sizeof(unsigned short));
 	vga_writeString("\nsizeof(unsigned int) = ");
@@ -61,6 +63,12 @@ int kernel_main()
 	vga_writeDec(sizeof(unsigned char));
 	vga_writeString("\nsizeof(unsigned long) = ");
 	vga_writeDec(sizeof(unsigned long));
+
+	while(true)
+	{
+		vga_writeDec(in_b(0x60));
+		vga_putchar(' ');
+	}
 
 
 //	halt(); // an assembly call to hlt, 
