@@ -5,6 +5,9 @@
 #include <idt.h>
 #include <tty.h>
 
+isr_t interrupt_handlers[256];
+
+
 extern void idt_flush(unsigned int);
 
 void init_idt();
@@ -18,6 +21,17 @@ void idt_install()
 	idtpr.limit = sizeof(struct idt_entry) * 256 -1;
 	idtpr.base = (unsigned int) & idt;
 	memset((char*) &idt, 0, sizeof(struct idt_entry) * 256);
+
+	out_b(0x20, 0x11);
+	out_b(0xA0, 0x11);
+	out_b(0x21, 0x20);
+	out_b(0xA1, 0x28);
+	out_b(0x21, 0x04);
+	out_b(0xA1, 0x02);
+	out_b(0x21, 0x01);
+	out_b(0xA1, 0x01);
+	out_b(0x21, 0x0);
+	out_b(0xA1, 0x0);
 
 	idt_set_gate(0, (unsigned int) isr0, 0x08, 0x8E);
 	idt_set_gate(1, (unsigned int) isr1, 0x08, 0x8E);
@@ -51,22 +65,24 @@ void idt_install()
 	idt_set_gate(29, (unsigned int) isr29, 0x08, 0x8E);
 	idt_set_gate(30, (unsigned int) isr30, 0x08, 0x8E);
 	idt_set_gate(31, (unsigned int) isr31, 0x08, 0x8E);
-	idt_set_gate(32, (unsigned int) isr32, 0x08, 0x8E);
-	idt_set_gate(33, (unsigned int) isr33, 0x08, 0x8E);
-	idt_set_gate(34, (unsigned int) isr34, 0x08, 0x8E);
-	idt_set_gate(35, (unsigned int) isr35, 0x08, 0x8E);
-	idt_set_gate(36, (unsigned int) isr36, 0x08, 0x8E);
-	idt_set_gate(37, (unsigned int) isr37, 0x08, 0x8E);
-	idt_set_gate(38, (unsigned int) isr38, 0x08, 0x8E);
-	idt_set_gate(39, (unsigned int) isr39, 0x08, 0x8E);
-	idt_set_gate(40, (unsigned int) isr40, 0x08, 0x8E);
-	idt_set_gate(41, (unsigned int) isr41, 0x08, 0x8E);
-	idt_set_gate(42, (unsigned int) isr42, 0x08, 0x8E);
-	idt_set_gate(43, (unsigned int) isr43, 0x08, 0x8E);
-	idt_set_gate(44, (unsigned int) isr44, 0x08, 0x8E);
-	idt_set_gate(45, (unsigned int) isr45, 0x08, 0x8E);
-	idt_set_gate(46, (unsigned int) isr46, 0x08, 0x8E);
-	idt_set_gate(47, (unsigned int) isr47, 0x08, 0x8E);
+
+	idt_set_gate(32, (unsigned int) irq0, 0x08, 0x8E);
+	idt_set_gate(33, (unsigned int) irq1, 0x08, 0x8E);
+	idt_set_gate(34, (unsigned int) irq2, 0x08, 0x8E);
+	idt_set_gate(35, (unsigned int) irq3, 0x08, 0x8E);
+	idt_set_gate(36, (unsigned int) irq4, 0x08, 0x8E);
+	idt_set_gate(37, (unsigned int) irq5, 0x08, 0x8E);
+	idt_set_gate(38, (unsigned int) irq6, 0x08, 0x8E);
+	idt_set_gate(39, (unsigned int) irq7, 0x08, 0x8E);
+	idt_set_gate(40, (unsigned int) irq8, 0x08, 0x8E);
+	idt_set_gate(41, (unsigned int) irq9, 0x08, 0x8E);
+	idt_set_gate(42, (unsigned int) irq10, 0x08, 0x8E);
+	idt_set_gate(43, (unsigned int) irq11, 0x08, 0x8E);
+	idt_set_gate(44, (unsigned int) irq12, 0x08, 0x8E);
+	idt_set_gate(45, (unsigned int) irq13, 0x08, 0x8E);
+	idt_set_gate(46, (unsigned int) irq14, 0x08, 0x8E);
+	idt_set_gate(47, (unsigned int) irq15, 0x08, 0x8E);
+
 	idt_set_gate(48, (unsigned int) isr48, 0x08, 0x8E);
 	idt_set_gate(49, (unsigned int) isr49, 0x08, 0x8E);
 	idt_set_gate(50, (unsigned int) isr50, 0x08, 0x8E);
@@ -289,11 +305,36 @@ void idt_set_gate(unsigned char num, unsigned int base, unsigned short sel, unsi
 }
 
 
- //it's suggested that this function be written in assembly... Sure, why not.
+
+// This doesn't do much at the moment, but at least it reports the isr and exceptions...
 void isr_handler(registers_t reg )
 {
 	vga_writeString("\nInterupt Recieved: ");
 	vga_writeDec(reg.int_no);
 }
+
+
+void irq_handler(registers_t reg)
+{
+	if(reg.int_no >= 40)
+	{
+		out_b(0xA0, 0x20);
+	}
+	out_b(0x20, 0x20);
+
+	if(interrupt_handlers[reg.int_no] != 0)
+	{
+		isr_t handler = interrupt_handlers[reg.int_no];
+		handler(reg);
+	}
+}
+
+void register_interrupt_handler(unsigned char n, isr_t handler)
+{
+	interrupt_handlers[n] = handler;
+}
+
+
+
 
 

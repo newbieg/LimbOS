@@ -1,6 +1,23 @@
 #ifndef IDT_TABLE_H_DEF
 #define IDT_TABLE_H_DEF
 // Currently following tutorial: http://www.jamesmolloy.co.uk/tutorial_html/4.-The%20GDT%20and%20IDT.html
+//
+#define IRQ0 32
+#define IRQ1 33
+#define IRQ2 34
+#define IRQ3 35
+#define IRQ4 36
+#define IRQ5 37
+#define IRQ6 38
+#define IRQ7 39
+#define IRQ8 40
+#define IRQ9 41
+#define IRQ10 42
+#define IRQ11 43
+#define IRQ12 44
+#define IRQ13 45
+#define IRQ14 46
+#define IRQ15 47
 
 struct idt_entry
 {
@@ -60,22 +77,24 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
-extern void isr32();
-extern void isr33();
-extern void isr34();
-extern void isr35();
-extern void isr36();
-extern void isr37();
-extern void isr38();
-extern void isr39();
-extern void isr40();
-extern void isr41();
-extern void isr42();
-extern void isr43();
-extern void isr44();
-extern void isr45();
-extern void isr46();
-extern void isr47();
+
+extern void irq0();
+extern void irq1();
+extern void irq2();
+extern void irq3();
+extern void irq4();
+extern void irq5();
+extern void irq6();
+extern void irq7();
+extern void irq8();
+extern void irq9();
+extern void irq10();
+extern void irq11();
+extern void irq12();
+extern void irq13();
+extern void irq14();
+extern void irq15();
+
 extern void isr48();
 extern void isr49();
 extern void isr50();
@@ -290,6 +309,10 @@ extern void isr255();
 
 
 void isr_handler(registers_t reg );
+
+typedef void (*isr_t)(registers_t);
+
+void register_interrupt_handler(unsigned char n, isr_t handler);
 
 
 

@@ -16,7 +16,18 @@
 extern void halt();
 
 
-extern unsigned char in_b(const unsigned short port);
+// return a value from port, may eventually export to full asm.
+static inline unsigned char in_b(const unsigned short port)
+{
+	unsigned char ret;
+	asm volatile ("outb %1, %0" : "=a"(ret) : "Nd"(port));
+	return ret;
+}
+// send value into port
+static inline void out_b(const unsigned short port, const unsigned char val)
+{
+	asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port));
+}
 
 
 // void* memcpy(char* dest, char* src, size_t length);

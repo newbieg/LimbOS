@@ -5,6 +5,7 @@
 #include <stdint.h>
 #include <gdt.h>
 #include <idt.h>
+#include <timer.h>
 
 
 void* memcpy(char * dest, char * src, size_t length)
@@ -31,6 +32,7 @@ int kernel_main()
 
 	gdt_install();
 	idt_install();
+	init_timer(50);
 	vga_init();
 	vga_writeString("Hello World");
 	vga_putchar('\n');
@@ -53,7 +55,8 @@ int kernel_main()
 		
 	}
 
-	//asm volatile ("int $0x02");
+	asm volatile ("int $0x03");
+	//asm volatile ("int $0x06");
 
 	vga_writeString("\nsizeof(unsigned short) = ");
 	vga_writeDec(sizeof(unsigned short));
@@ -63,12 +66,6 @@ int kernel_main()
 	vga_writeDec(sizeof(unsigned char));
 	vga_writeString("\nsizeof(unsigned long) = ");
 	vga_writeDec(sizeof(unsigned long));
-
-	while(true)
-	{
-		vga_writeDec(in_b(0x60));
-		vga_putchar(' ');
-	}
 
 
 //	halt(); // an assembly call to hlt, 

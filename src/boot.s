@@ -103,13 +103,13 @@ idt_flush:
 	lidt (%eax)
 	ret
 
-
-# unsigned char inb(unsigned short port);
+/*
+# unsigned char in_b(unsigned short port);
 .globl in_b
 .type in_b, @function
 in_b:
 	PUSHALL
-	movl %esp, %eax
+	movl 4(%esp), %eax
 	movl %eax, %edx
 	inb %dx, %al
 	movb %al, -1(%ebp)
@@ -117,6 +117,20 @@ in_b:
 	POPALL
 	ret
 
+# void out_b(unsigned short port, unsigned char val);
+.globl out_b
+.type out_b, @function
+out_b:
+	PUSHALL
+	movl 4(%esp), %eax
+	movl %eax, %edx
+	movl 4(%esp), %eax
+	outb %al, %dx
+	nop
+	POPALL
+	ret
+*/	
+	
 	
 
 
@@ -127,7 +141,7 @@ in_b:
 	isr\p:
 		cli
 		pushl $0
-		pushl $\p
+		pushl $(\p)
 		jmp isr_common_stub
 .endm
 
@@ -139,6 +153,17 @@ in_b:
 		cli
 		pushl $(\p)
 		jmp isr_common_stub
+.endm
+
+# remap the irq's to appropriate isr numbers.
+.macro irq_m s d
+	.globl irq\s
+	.type irq\s, @function
+	irq\s:
+		cli
+		pushl $0
+		pushl $(\d)
+		jmp irq_common_stub
 .endm
 
 
@@ -178,22 +203,24 @@ isr_NE 28
 isr_NE 29
 isr_NE 30
 isr_NE 31
-isr_NE 32
-isr_NE 33
-isr_NE 34
-isr_NE 35
-isr_NE 36
-isr_NE 37
-isr_NE 38
-isr_NE 39
-isr_NE 40
-isr_NE 41
-isr_NE 42
-isr_NE 43
-isr_NE 44
-isr_NE 45
-isr_NE 46
-isr_NE 47
+
+irq_m 0, 32
+irq_m 1, 33
+irq_m 2, 34
+irq_m 3, 35
+irq_m 4, 36
+irq_m 5, 37
+irq_m 6, 38
+irq_m 7, 39
+irq_m 8, 40
+irq_m 9, 41
+irq_m 10, 42
+irq_m 11, 43
+irq_m 12, 44
+irq_m 13, 45
+irq_m 14, 46
+irq_m 15, 47
+
 isr_NE 48
 isr_NE 49
 isr_NE 50
@@ -435,6 +462,34 @@ call isr_handler
 	add $8, %esp
 	sti
 	iret
+
+# defined in idt.c
+.extern irq_handler
+
+irq_common_stub:
+	PUSHA
+	movw %ds, %ax
+	pushl %eax
+
+	movw $0x10, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	
+	call irq_handler
+	
+	popl %ebx
+	movw %bx, %ds
+	movw %bx, %es
+	movw %bx, %fs
+	movw %bx, %gs
+
+	popa
+	add $8, %esp
+	sti
+	iret
+
 
 
 
