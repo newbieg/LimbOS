@@ -34,6 +34,7 @@ int kernel_main()
 	idt_install();
 	init_timer(50);
 	vga_init();
+	/*
 	vga_writeString("Hello World");
 	vga_putchar('\n');
 	//* // Testing for correct decimal outputs
@@ -55,8 +56,16 @@ int kernel_main()
 		
 	}
 
-	asm volatile ("int $0x03");
-	//asm volatile ("int $0x06");
+//	asm volatile ("int $0x00");
+//	asm volatile ("int $0x01");
+//	asm volatile ("int $0x02");
+//	asm volatile ("int $0x03");
+//	asm volatile ("int $0x04");
+//	asm volatile ("int $0x05");
+//	asm volatile ("int $0x06");
+//	asm volatile ("int $0x07");
+//	asm volatile ("int $0x08");
+//	asm volatile ("int $0x09");
 
 	vga_writeString("\nsizeof(unsigned short) = ");
 	vga_writeDec(sizeof(unsigned short));
@@ -68,7 +77,9 @@ int kernel_main()
 	vga_writeDec(sizeof(unsigned long));
 
 
-//	halt(); // an assembly call to hlt, 
+//halt(); // an assembly call to hlt, 
+//*/
+while(true){} 
 
 	return 0;
 }

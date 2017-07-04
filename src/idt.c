@@ -301,7 +301,7 @@ void idt_set_gate(unsigned char num, unsigned int base, unsigned short sel, unsi
 	idt[num].base_high = (base >> 16) & 0xFFFF;
 	idt[num].sellector = sel;
 	idt[num].zero = 0;
-	idt[num].flags = flags /* | 0x60*/;
+	idt[num].flags = flags | 0x60;
 }
 
 
@@ -309,8 +309,42 @@ void idt_set_gate(unsigned char num, unsigned int base, unsigned short sel, unsi
 // This doesn't do much at the moment, but at least it reports the isr and exceptions...
 void isr_handler(registers_t reg )
 {
-	vga_writeString("\nInterupt Recieved: ");
+	vga_writeString("\nInterupt Recieved: #");
 	vga_writeDec(reg.int_no);
+//	vga_putchar('\n');
+	vga_writeString(" Error_code: ");
+	vga_writeDec(reg.err_code);
+	vga_putchar('\n');
+	vga_writeString("REGISTERS");
+	vga_writeString("\nds:");
+	vga_writeDec(reg.ds);
+//	vga_putchar('\n');
+	vga_writeString(" edi:");
+	vga_writeDec(reg.edi);
+//	vga_putchar('\n');
+	vga_writeString(" esi:");
+	vga_writeDec(reg.esi);
+//	vga_putchar('\n');
+	vga_writeString(" ebp:");
+	vga_writeDec(reg.ebp);
+//	vga_putchar('\n');
+	vga_writeString(" esp:");
+	vga_writeDec(reg.esp);
+//	vga_putchar('\n');
+	vga_writeString(" ebx:");
+	vga_writeDec(reg.ebx);
+//	vga_putchar('\n');
+	vga_writeString(" edx:");
+	vga_writeDec(reg.edx);
+//	vga_putchar('\n');
+	vga_writeString(" ecx:");
+	vga_writeDec(reg.ecx);
+//	vga_putchar('\n');
+	vga_writeString(" eax:");
+	vga_writeDec(reg.eax);
+	vga_putchar('\n');
+//	halt();
+
 }
 
 

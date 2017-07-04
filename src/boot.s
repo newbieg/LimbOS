@@ -103,36 +103,6 @@ idt_flush:
 	lidt (%eax)
 	ret
 
-/*
-# unsigned char in_b(unsigned short port);
-.globl in_b
-.type in_b, @function
-in_b:
-	PUSHALL
-	movl 4(%esp), %eax
-	movl %eax, %edx
-	inb %dx, %al
-	movb %al, -1(%ebp)
-	movzbl -1(%ebp), %eax
-	POPALL
-	ret
-
-# void out_b(unsigned short port, unsigned char val);
-.globl out_b
-.type out_b, @function
-out_b:
-	PUSHALL
-	movl 4(%esp), %eax
-	movl %eax, %edx
-	movl 4(%esp), %eax
-	outb %al, %dx
-	nop
-	POPALL
-	ret
-*/	
-	
-	
-
 
 # the next two macros are used to shorten the process of declaring 256 isr functions below.
 .macro isr_NE p
@@ -462,6 +432,7 @@ call isr_handler
 	add $8, %esp
 	sti
 	iret
+	
 
 # defined in idt.c
 .extern irq_handler
