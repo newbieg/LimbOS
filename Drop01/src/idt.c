@@ -3,6 +3,7 @@
 
 #include <system.h>
 #include <idt.h>
+#include <gdt.h>
 #include <tty.h>
 
 isr_t interrupt_handlers[256];
@@ -10,8 +11,8 @@ isr_t interrupt_handlers[256];
 
 extern void idt_flush(unsigned int);
 
-void init_idt();
-void idt_set_gate(unsigned char, unsigned int, unsigned short, unsigned char);
+static void init_idt();
+static void idt_set_gate(unsigned char, unsigned int, unsigned short, unsigned char);
 
 struct idt_entry idt[256];
 struct idt_ptr idtpr;

@@ -68,10 +68,85 @@ halt:
 	hlt
 	ret
 
+# void gdt_flush((usigned int) &gdt_ptr);
+# GDT function flush will clear the old segment registers
+# from whatever Grub Multiboot has provided.
+# and then do a far-jump. Right now this is magic to me, 
+# brought to you by Bran's Tutorials though I translated them 
+# from NASM to GNU-as.
+
+.globl gdt_flush
+.type gdt_flush, @function
+
+gdt_flush:
+	cli
+	cld
+	movl 4(%esp), %eax
+	lgdt (%eax)
+	movw $0x10, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	movw %ax, %ss
+	ljmp $0x08, $flush
+
+flush:
+	ret
+
+# void idt_flush(unsigned int &idt_ptr)
+# called to emplant my idt 
+.globl idt_flush
+.type idt_flush, @function
+
+idt_flush:
+	movl 4(%esp), %eax
+	lidt (%eax)
+	ret
+
+
+# the next two macros are used to shorten the process of declaring 256 isr functions below.
+.macro isr_NE p
+	.globl isr\p
+	.type isr\p, @function
+	.align 4
+	isr\p:
+		cli
+		cld
+		pushl $0
+		pushl $(\p)
+		jmp isr_common_stub
+.endm
+
+
+.macro isr_E p
+	.globl isr\p
+	.type isr\p, @function
+	.align 4
+	isr\p:
+		cli
+		cld
+		pushl $(\p)
+		jmp isr_common_stub
+.endm
+
+# remap the irq's to appropriate isr numbers.
+.macro irq_m s d
+	.globl irq\s
+	.type irq\s, @function
+	irq\s:
+		cli
+		cld
+		pushl $0
+		pushl $(\d)
+		jmp irq_common_stub
+.endm
+
+
+
 
 # Setting up all 256 isr functions. I probably could have been smart about this
 # and tried nesting macros... Maybe next time around. 
-/*
 isr_NE 0
 isr_NE 1
 isr_NE 2
@@ -330,7 +405,55 @@ isr_NE 252
 isr_NE 253
 isr_NE 254
 isr_NE 255
-*/
+
+# Defined in src/idt.c
+.extern isr_handler
+
+
+
+# see mscro behind isr_NE and isr_E
+isr_common_stub:
+	PUSHALL
+	cli
+	cld
+	
+call isr_handler
+
+	POPALL
+	iret
+	
+
+# defined in idt.c
+.extern irq_handler
+
+irq_common_stub:
+	PUSHA
+	cli 
+	cld
+	movw %ds, %ax
+	pushl %eax
+
+	movw $0x10, %ax
+	movw %ax, %ds
+	movw %ax, %es
+	movw %ax, %fs
+	movw %ax, %gs
+	
+	call irq_handler
+	
+	popl %ebx
+	movw %bx, %ds
+	movw %bx, %es
+	movw %bx, %fs
+	movw %bx, %gs
+
+	POPALL
+	add $8, %esp
+	sti
+	iret
+
+
+
 
 .size _start, . - _start 
 

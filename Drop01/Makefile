@@ -12,9 +12,11 @@ build:
 	$(CC) $(CFILEFLAGS) src/string.c -o string.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/gdt.c -o gdt.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/idt.c -o idt.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/timer.c -o timer.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
-	./_ echo this should not run.
-	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o -lgcc
+	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o gdt.o idt.o timer.o kernel.o -lgcc
 
 stable: build
 	cp myos.bin isodir/boot/myos_stable.bin
