@@ -49,6 +49,8 @@ int kernel_main()
 		vga_writeDec(i);
 		
 	}
+	vga_putchar('\n');
+	vga_writeHex(0x60789);
 
 	return 0;
 }

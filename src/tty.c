@@ -17,6 +17,8 @@ const size_t VGA_WIDTH = 80;
 const size_t VGA_HEIGHT = 25;
 
 
+char* reverseString(char * str);
+
 
 uint8_t vga_displayColor(enum vga_color foreground, enum vga_color background)
 {
@@ -162,11 +164,6 @@ void vga_writeDec(const int number)
 	
 	size_t len = strlen(text) - 1;
 	size_t halfLen = len/2;
-/*	if(!(len%2))
-	{
-		halfLen ++;
-	}
-	*/
 	for(size_t i = start; i <= halfLen; i ++)
 	{
 		char temp = text[i];
@@ -179,7 +176,30 @@ void vga_writeDec(const int number)
 }
 
 
-void vga_writeHex(const int number);
+void vga_writeHex(const unsigned int number)
+{
+	vga_putchar('0');
+	vga_putchar('x');
+	unsigned int num = number;
+	char outchar[11];
+	outchar[0] = ((char) num) & 0xF;
+	for(size_t i = 0; i < sizeof(unsigned int) && num > 0; i ++)
+	{
+		outchar[i] = (num >> 4) & 0xF;
+		num = num >> 4;
+		if(outchar[i] < 10)
+		{
+			outchar[i] += '0';
+		}
+		else
+		{
+			outchar[i] += 'A';
+		}
+		outchar[i + 1] = '\0';
+	}
+	vga_writeString(reverseString(outchar));	
+	
+}
 
 void vga_logEntry(char* label, char* string)
 {
@@ -192,6 +212,18 @@ void vga_logEntry(char* label, char* string)
 	vga_putchar('\n');
 }
 
+char* reverseString(char* str)
+{
+	char* text = str;
+	size_t len = strlen(text) - 1;
+	size_t halfLen = len/2;
+	for(size_t i = 0; i <= halfLen; i ++)
+	{
+		char temp = text[i];
+		text[i] = text[len - i];
+		text[len -i] = temp;
+		
+	}
+	return text;
 
-
-
+}

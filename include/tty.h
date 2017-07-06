@@ -54,7 +54,7 @@ void vga_scroll(size_t lines);
 void vga_writeDec(const int number);
 
 
-void vga_writeHex(const int number);
+void vga_writeHex(const unsigned int number);
 
 
 void vga_logEntry(char* label, char * string);
