@@ -34,7 +34,7 @@ static inline void out_b(const unsigned short port, const unsigned char val)
 // defined in kernel.c
 // copies length amount of chars from src to dest.
 // Return: dest
-void* memcpy(char * dest, char * src, size_t length);
+//void* memcpy(char * dest, char * src, size_t length);
 
 
 // void* memset(char* dest, char value, size_t length);

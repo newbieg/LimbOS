@@ -1,27 +1,11 @@
 #include "tty.h"
+#include <string.h>
+
 #include <system.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
-
-void* memcpy(char * dest, char * src, size_t length)
-{
-	for(size_t i = 0; i < length; i ++)
-	{
-		dest[i] = src[i];
-	}
-	return dest;
-}
-
-void* memset(char* dest, const char val, size_t length)
-{
-	for(size_t i = 0; i < length; i ++)
-	{
-		dest[i] = val;
-	}
-	return dest;
-}
 
 
 int kernel_main()
@@ -43,14 +27,43 @@ int kernel_main()
 
 	vga_writeString("Testing window scrolling...");
 
-	for(int i = 0; i < 25; i ++)
+	/* // This is very slow. I tried commenting out the lines that
+		// actually output to screen and the rest of the algorithm
+		// took less than a second (though there was a slight pause).
+		// I need to figure out a way to speed up screen output. 
+		// Currently thinking of ways to output entire pages at a time
+		// if it's detected that the screen is very busy.
+		// Might also figure out how to write memcpy in assembly. 
+	for(unsigned int i = 0; i < 5000; i ++)
 	{
 		vga_putchar('\n');
-		vga_writeDec(i);
+		vga_writeBinary(i);
 		
 	}
+	*/
 	vga_putchar('\n');
 	vga_writeHex(0x60789);
+	vga_putchar('\n');
+	vga_writeBinary(0x60789);
+	vga_putchar('\n');
+	vga_writeBinary(0x30);
+	vga_putchar('\n');
+	vga_writeBinary(0x30);
+	vga_writeString("\n10 & 11 = ");
+	vga_writeDec((10 & 11));
+	vga_writeString("\n11 & 12 = ");
+	vga_writeDec((11 & 12));
+	vga_writeString("\n10 | 11 = ");
+	vga_writeDec((10 | 11));
+	vga_writeString("\n binary 100 = ");
+	vga_writeBinary(0b100);
+
+	char bub[30];
+	vga_writeString("\nUsing my itoa function");
+	vga_writeString(itoa(0x34, bub, 16));
+	vga_putchar('\n');
+	vga_writeString(itoa(34, bub, 2));
+	vga_logEntry("Warning:", "No Keyboard found. Press Enter to Continue.\n");
 
 	return 0;
 }

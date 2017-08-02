@@ -15,6 +15,7 @@ uint8_t  terminal_color;
 
 const size_t VGA_WIDTH = 80;
 const size_t VGA_HEIGHT = 25;
+const size_t VGA_SPREAD = 80 * 25;
 
 
 char* reverseString(char * str);
@@ -77,11 +78,12 @@ void vga_setCursorToTop()
 
 void vga_scroll(size_t lineCount)
 {
-	for(size_t i = 0; i < VGA_WIDTH * VGA_HEIGHT; i ++)
+	for(size_t i = 0; i < VGA_SPREAD; i ++)
 	{
 		terminal_buffer[i] = terminal_buffer[i+VGA_WIDTH * lineCount];
 	}
-	vga_splashLine(VGA_HEIGHT - 1);
+//	memcpy((char*)terminal_buffer, (char*) (terminal_buffer + (VGA_WIDTH * lineCount)), (VGA_SPREAD - VGA_WIDTH * lineCount)/2);
+//	vga_splashLine(VGA_HEIGHT - 1);
 }
 
 void vga_putchar(const char c)
@@ -121,7 +123,6 @@ void vga_setColor(uint16_t pallet)
 	terminal_color = pallet;
 }
 
-
 void vga_write(const char* data, const size_t length)
 {
 	for(size_t i = 0; i < length; i ++)
@@ -136,69 +137,30 @@ void vga_writeString(const char* str)
 }
 
 
+
+
 void vga_writeDec(const int number)
 {
-	if(number == 0)
-	{
-		vga_putchar('0');
-		return;
-	}
-	int tempNum = number;
-	size_t count = 0;
 	char text[12];
-	if(tempNum < 0)
-	{
-		text[0] = '-';
-		count ++;
-	}
-	int start = count;
-	tempNum = abs(tempNum);
-	while(tempNum > 0)
-	{
-		int dec = tempNum % 10;
-		text[count] = '0' + dec;
-		tempNum /= 10;
-		count ++;
-	}
-	text[count] = '\0';
-	
-	size_t len = strlen(text) - 1;
-	size_t halfLen = len/2;
-	for(size_t i = start; i <= halfLen; i ++)
-	{
-		char temp = text[i];
-		text[i] = text[len - i + start];
-		text[len -i + start] = temp;
-		
-	}
-
+	itoa(number, text, 10);
 	vga_writeString(text);
 }
 
 
 void vga_writeHex(const unsigned int number)
 {
-	vga_putchar('0');
-	vga_putchar('x');
-	unsigned int num = number;
+	vga_writeString("0x");
 	char outchar[11];
-	outchar[0] = ((char) num) & 0xF;
-	for(size_t i = 0; i < sizeof(unsigned int) && num > 0; i ++)
-	{
-		outchar[i] = (num >> 4) & 0xF;
-		num = num >> 4;
-		if(outchar[i] < 10)
-		{
-			outchar[i] += '0';
-		}
-		else
-		{
-			outchar[i] += 'A';
-		}
-		outchar[i + 1] = '\0';
-	}
-	vga_writeString(reverseString(outchar));	
-	
+	uitoa(number, outchar, 16);
+	vga_writeString(outchar);	
+}
+
+void vga_writeBinary(const unsigned int number)
+{
+	vga_writeString("0b");
+	char output[133];
+	uitoa(number, output, 2);
+	vga_writeString(output);
 }
 
 void vga_logEntry(char* label, char* string)
@@ -211,19 +173,24 @@ void vga_logEntry(char* label, char* string)
 	terminal_color = oldPalette;
 	vga_putchar('\n');
 }
-
+/*
 char* reverseString(char* str)
 {
 	char* text = str;
-	size_t len = strlen(text) - 1;
-	size_t halfLen = len/2;
-	for(size_t i = 0; i <= halfLen; i ++)
+	size_t len = strlen(text);
+	if(len > 0)
 	{
-		char temp = text[i];
-		text[i] = text[len - i];
-		text[len -i] = temp;
-		
+		len --;
+	
+		size_t halfLen = len/2;
+		for(size_t i = 0; i <= halfLen; i ++)
+		{
+			char temp = text[i];
+			text[i] = text[len - i];
+			text[len - i] = temp;
+		}
+		str = text;
 	}
-	return text;
-
+	return str;
 }
+*/
