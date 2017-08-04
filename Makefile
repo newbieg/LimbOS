@@ -13,10 +13,18 @@ build:
 	$(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
-	./_ echo this should not run.
+	./_ echo this should not run, Use it to skip over commands in Makefile.
 	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o -lgcc
 
-stable: build
+build_stable:
+	$(AS) stable_src/boot.s -o boot.o
+	$(CC) $(CFILEFLAGS) stable_src/string.c -o string.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) stable_src/math.c -o math.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) stable_src/tty.c -o tty.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) stable_src/kernel.c -o kernel.o $(CFLAGS)
+	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o -lgcc
+
+stable: build_stable
 	cp myos.bin isodir/boot/myos_stable.bin
 	cp grub.cfg isodir/boot/grub/
 

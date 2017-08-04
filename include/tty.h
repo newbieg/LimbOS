@@ -27,6 +27,15 @@ enum vga_color
         VGA_COLOR_WHITE,
 };
 
+enum logWarnLevel
+{
+	LOG_WARN = 0,
+	LOG_UGLY,
+	LOG_BAD,
+	LOG_GOOD,
+	LOG_NEUTRAL,
+	LOG_DEFAULT,
+};
 
 // call once to initialize the tty terminal
 void vga_init();
@@ -40,6 +49,9 @@ void vga_putchar(const char data);
 unsigned int vga_getCursorPos();
 
 void vga_setCursorToTop();
+
+void vga_setBackgroundColor(enum vga_color bkg);
+void vga_setTextColor(enum vga_color txtColor);
 
 void vga_writeBuffer(const char* data, const int size);
 
@@ -56,7 +68,8 @@ void vga_writeHex(const unsigned int number);
 void vga_writeBinary(const unsigned int number);
 
 
-void vga_logEntry(char* label, char * string);
+void vga_logEntry(char* label, char * string, enum logWarnLevel emotive);
+
 
 
 
