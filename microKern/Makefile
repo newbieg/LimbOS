@@ -6,7 +6,7 @@ STABLE_FOLDER = stable_src
 CC=i686-elf-gcc
 AS=i686-elf-as
 
-all: build iso clean run
+all: build iso run
 
 build:
 	$(AS) src/boot.s -o boot.o
@@ -14,7 +14,6 @@ build:
 	$(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
-	./_ echo this should not run, Use it to skip over commands in Makefile.
 	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o -lgcc
 
 build_stable:
@@ -39,3 +38,14 @@ run:
 
 clean:
 	-rm *.o *.h.gch
+
+nasm:
+	nasm -f elf32 smallest.s
+	ld -T link.ld -melf_i386 smallest.o -o myos.bin
+	cp myos.bin isodir/boot/
+	grub2-mkrescue -o myos.iso isodir
+	bochs -f bock.txt -q
+	
+
+
+
