@@ -25,3 +25,5 @@ $ cd LimbOS;
 $ make; 
 
 
+
+Notice there is an executable called "_", this is a dummy program that does nothing. I made it simply to be used to comment out lines in the Makefile. It does nothing, so please feel free to replace it's contents with your own version (maybe output some ascii art if you're so inclined).
