@@ -27,3 +27,11 @@ $ make;
 
 
 Notice there is an executable called "_", this is a dummy program that does nothing. I made it simply to be used to comment out lines in the Makefile. It does nothing, so please feel free to replace it's contents with your own version (maybe output some ascii art if you're so inclined).
+
+
+# Currently I'm working in the folder microKern/ as a test site.
+## This has become a bit messy
+	I originally gave up on the project and tossed a lot of my work into the Drop01 folder in order to get things back to buildable setting. 
+	I took a month or two off to focus on school and work.
+	Now I want to focus on getting things working and don't want to delve too deeply at the same time. 
+	I'm basically in a holding mode where research is slow and progress is even slower...
