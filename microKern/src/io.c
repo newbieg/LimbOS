@@ -1,13 +1,18 @@
- /* Think of pos as a one-D representation of a two-D array.
-  * y * width + x is the general idea. Not a fully protected function
-  * user must beware, do not overflow your position buffer.
-  * */
 
-void vga_moveCursor(unsigned short pos)
+#include <io.h>
+
+void serial_confBaudRate(unsigned short com, unsigned short divisor)
 {
-	outb(FB_CMD_PORT, FB_CMD_HIGHBYTE);
-	outb(FB_DATA_PORT, ((pos >> 8) & 0x00FF));
-	outb(FB_CMD_PORT, FB_CMD_LOWBYTE);
-	outb(FB_DATA_PORT, pos & 0x00FF);
+	outb(SERIAL_LINE_CMD_PORT(com), SERIAL_LINE_ENABLE_DLAB);
+	outb(SERIAL_DATA_PORT(com), (divisor >> 8) & 0x00FF);
+	outb(SERIAL_DATA_PORT(com), divisor * 0x00FF);
 }
+
+
+void serial_condLine(unsined short com)
+{
+	outb(SERIAL_LINE_CD_PORT(com), 0x03);
+}
+
+
 

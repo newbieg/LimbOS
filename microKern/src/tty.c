@@ -3,8 +3,8 @@
  * 
  * */
 #include "tty.h" 
-#include "math.h" // abs()
-#include "string.h" // strlen()
+#include <libk/math.h> // abs()
+#include <libk/string.h> // strlen()
 #include "io.h"
 
 const size_t TABSIZE = 4;
@@ -158,7 +158,7 @@ void vga_writeString(const char* str)
 
 void vga_writeDec(const int number)
 {
-	char text[12];
+	char text[19];
 	itoa(number, text, 10);
 	vga_writeString(text);
 }
@@ -175,8 +175,8 @@ void vga_writeHex(const unsigned int number)
 void vga_writeBinary(const unsigned int number)
 {
 	vga_writeString("0b");
-	char output[133];
-	uitoa(number, output, 2);
+	char output[35];
+	itoa(number, output, 2);
 	vga_writeString(output);
 }
 
@@ -198,7 +198,7 @@ void vga_logEntry(char* label, char* string, enum logWarnLevel emotive)
 	else if(emotive == LOG_NEUTRAL)
 		terminal_color = vga_displayColor(VGA_COLOR_WHITE, VGA_COLOR_LIGHT_BLUE);
 
-	vga_splashLine(terminal_y);
+//	vga_splashLine(terminal_y);
 	vga_writeString(label);
 	if(emotive == LOG_WARN)
 		terminal_color = vga_displayColor(VGA_COLOR_BLACK, VGA_COLOR_LIGHT_GREY);

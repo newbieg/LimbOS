@@ -79,7 +79,8 @@ int kernel_main()
 I ran into issues with my gdt/idt/irq and \n\
 am having trouble actually ID'ing what the\n\
 problem is. I'll keep this branch around \n\
-as a resource.");
+as a resource.\n\
+Hit ctrl-alt-q to exit qemu.");
 
 
 //halt(); // an assembly call to hlt, 

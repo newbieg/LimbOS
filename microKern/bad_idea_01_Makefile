@@ -1,3 +1,14 @@
+## I started to wrap all included kernel files in if statements.
+## if the object files existed, I did not wnt to rebuild them from source, just
+## use what is there.
+## I feel this is a bad idea because it means that I'll likely forget that
+## I made this modification, and won't understand why changes to the system
+## aren't taking affect. 
+## benefits: Slightly faster build time.
+##	More dificulty in adding a file so fewer files likely to be added.
+## disadvantages: likely to cause build issues
+## 		convolution
+##		Takes longer to add files.
 CFLAGS=-ffreestanding -O2 -std=gnu99 -Wall -Wextra -Iinclude
 CFILEFLAGS=-c
 CLINKERFLAGS=-ffreestanding -O2 -nostdlib
@@ -9,10 +20,10 @@ AS=i686-elf-as
 all: build iso run clean
 
 build:
-	$(AS) src/boot.s -o boot.o
-	$(CC) $(CFILEFLAGS) src/string.c -o string.o $(CFLAGS)
-	$(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS)
-	$(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS)
+	if [ ! -a "boot.o" ]; then $(AS) src/boot.s -o boot.o; fi;
+	if [ ! -a "string.o" ]; then $(CC) $(CFILEFLAGS) src/string.c -o string.o $(CFLAGS); fi;
+	if [ ! -a "math.o" ]; then $(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS); fi;
+	if [ ! -a "tty.o" ]; then $(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS); fi;
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
 	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o -lgcc
 

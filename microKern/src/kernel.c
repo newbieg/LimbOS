@@ -1,11 +1,21 @@
-#include "tty.h"
-#include <string.h>
+#include <tty.h>
+#include <libk/string.h>
+#include <io.h>
 
 #include <system.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
 
+void reboot()
+{
+	unsigned char good = 0x02;
+	while((good & 0x02) != 0)
+	{
+		good = inb(0x02);
+	}
+	outb(0x64, 0xFE);
+}
 
 
 int kernel_main()
@@ -20,27 +30,21 @@ int kernel_main()
 	vga_writeDec(-123);
 	vga_writeDec(-1234);
 	vga_writeDec(-12345);
-	vga_writeDec(-1234567890);
+	vga_writeDec(-1234567890); // lucky that 32 bit allows 10 digits length.
 	vga_putchar('\n');
 
 	vga_logEntry("Log Entry:", "Happy new OS", LOG_NEUTRAL);
 
 	vga_writeString("Testing window scrolling...");
 
-	/* // This is very slow. I tried commenting out the lines that
-		// actually output to screen and the rest of the algorithm
-		// took less than a second (though there was a slight pause).
-		// I need to figure out a way to speed up screen output. 
-		// Currently thinking of ways to output entire pages at a time
-		// if it's detected that the screen is very busy.
-		// Might also figure out how to write memcpy in assembly. 
+	/*
 	for(unsigned int i = 0; i < 5000; i ++)
 	{
 		vga_putchar('\n');
 		vga_writeBinary(i);
-		
 	}
-	*/
+*/
+
 	vga_putchar('\n');
 	vga_writeHex(0x60789);
 	vga_putchar('\n');
@@ -60,23 +64,35 @@ int kernel_main()
 	vga_writeString("\n binary 100 = ");
 	vga_writeBinary(0b100);
 
-	char bub[30];
-	vga_writeString("\nUsing my itoa function: ");
+	char bub[34];
+	vga_writeString("\nUsing my base-changing itoa function: ");
 	vga_writeString(itoa(0x3A, bub, 16));
-	vga_writeString("\nUsing my itoa function: ");
-	vga_writeString(itoa(0x34, bub, 16));
-	vga_putchar('\n');
-	vga_writeString(itoa(34, bub, 2));
+	vga_writeString(" = ");
+	vga_writeString(itoa(0x34, bub, 10));
+	vga_writeString(" = ");
+	vga_writeString(itoa(0x34, bub, 2));
+	vga_writeString("\n");
 
 	vga_logEntry("Warning:", "No Keyboard found. Press Enter to Continue.", LOG_GOOD);
 	vga_logEntry("Warning:", "No Keyboard found. Press Enter to Continue.", LOG_BAD);
 	vga_logEntry("Warning:", "No Keyboard found. Press Enter to Continue.This is going to be an extra long terminal log entry just so that I can try to get the background to match even if it spans multiple lines.", LOG_UGLY);
 
 	vga_logEntry("Warning:", "No Keyboard found. Press Enter to Continue.", LOG_WARN);
-	
-	vga_writeString("Cursor is right here->");
-	vga_scroll(3);
-	vga_writeString("Well, it was, now it's here ->");
 
+	int charlie = 1;
+	for(int i = 1; i < 100; i ++)
+	{
+	
+		charlie ++;
+		vga_writeDec(charlie);
+		vga_writeString("and\n");
+
+	}
+	
+
+	vga_writeString("NOPE!");
+	
+	// Function that reboots the computer.
+	reboot();
 	return 0;
 }

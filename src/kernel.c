@@ -74,6 +74,7 @@ int kernel_main()
 
 	vga_logEntry("Warning:", "No Keyboard found. Press Enter to Continue.", LOG_WARN);
 	
+	vga_writeString("\nThe cursor is here->");
 
 	return 0;
 }

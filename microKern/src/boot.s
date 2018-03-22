@@ -80,6 +80,15 @@ outb:
 	out %al, %dx
 	ret
 
+// move the address into dx
+// then read a byte from that address.
+.global inb
+inb:
+	mov 4(%esp), %dx
+	in %dx, %al
+	ret
+
+
 # Setting up all 256 isr functions. I probably could have been smart about this
 # and tried nesting macros... Maybe next time around. 
 /*

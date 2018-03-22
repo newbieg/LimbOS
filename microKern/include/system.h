@@ -16,6 +16,7 @@
 // An Assembly call to hlt, defined in boot.s
 // Currently only used for debugging purposes.
 extern void halt();
+void reboot();
 
 
 

@@ -1,4 +1,4 @@
-#include "math.h"
+#include <libk/math.h>
 
 int abs(const int input)
 {

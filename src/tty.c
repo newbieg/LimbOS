@@ -90,6 +90,7 @@ void vga_scroll(size_t lineCount)
 	{
 		vga_splashLine(VGA_HEIGHT - i);
 	}
+	
 }
 
 void vga_putchar(const char c)
