@@ -29,6 +29,7 @@ mov $stack_top, %esp
 call kernel_main
 
 mov $stack_top, %esp
+sti
 call kernel_main
 
 to_here:
@@ -73,12 +74,14 @@ halt:
 // probably there is a better place than
 // here to put it, but for now I only keep
 // one ASM file...
+// void outb(unsigned short port_Number, unsigned char output_Data)
 .global outb
 outb:
 	mov 8(%esp), %al
 	mov 4(%esp), %dx
 	out %al, %dx
 	ret
+
 
 // move the address into dx
 // then read a byte from that address.
@@ -87,6 +90,51 @@ inb:
 	mov 4(%esp), %dx
 	in %dx, %al
 	ret
+
+
+
+// saw this in another's code, tried to translate it but not working as expected...
+.global io_wait
+io_wait:
+//	outb $0x80, %al
+//	outb $0x80, %al
+	ret
+
+.global io_disableInterrupts
+io_disableInterrupts:
+	cli
+	ret
+
+.global io_enableInterrupts
+io_enableInterrupts:
+	sti
+	ret
+
+
+// declared in /src/system.h
+//int* pushRegs(int[10] list) // returns pointer to int array conating register vals
+.global pushRegs
+pushRegs:
+	push %ebp //; save base pointer
+	mov %ebx, %edi
+
+	mov %ebx, (%edi)
+	mov %eax, 4(%edi)
+	mov %ecx, 8(%edi)
+	mov %edx, 12(%edi)
+	mov %edi, 16(%edi)
+	mov %esi, 20(%edi)
+	mov %esp, 24(%edi)
+	mov %ebp, 28(%edi)
+
+	pop %ebp
+	ret
+
+.global getCPUID
+getCPUID:
+	xor %eax, %eax
+	cpuid
+
 
 
 # Setting up all 256 isr functions. I probably could have been smart about this

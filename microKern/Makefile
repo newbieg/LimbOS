@@ -1,5 +1,5 @@
 CFLAGS=-ffreestanding -O2 -std=gnu99 -Wall -Wextra -Iinclude
-CFILEFLAGS=-c
+CFILEFLAGS=-c -O3
 CLINKERFLAGS=-ffreestanding -O2 -nostdlib
 STABLE_FOLDER = stable_src
 
@@ -13,8 +13,11 @@ build:
 	$(CC) $(CFILEFLAGS) src/string.c -o string.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/math.c -o math.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/tty.c -o tty.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/io.c -o io.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/kbd.c -o kbd.o $(CFLAGS)
+	$(CC) $(CFILEFLAGS) src/regs.c -o regs.o $(CFLAGS)
 	$(CC) $(CFILEFLAGS) src/kernel.c -o kernel.o $(CFLAGS)
-	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o kernel.o -lgcc
+	$(CC) -T linker.ld -o myos.bin $(CLINKERFLAGS) boot.o string.o math.o tty.o io.o kbd.o regs.o kernel.o -lgcc
 
 build_stable:
 	$(AS) $(STABLE_FOLDER)/boot.s -o boot.o

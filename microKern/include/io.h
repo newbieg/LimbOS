@@ -16,6 +16,10 @@
 void vga_moveCursor(unsigned short pos);
 
 
+
+
+// as far as I understand it, SERIAL_IO is basically just used for debugging purposes with bochs
+// which is not my pref'd emulator anyhow, so this is left incomplete until I take it back on.
 #define SERIAL_BASE_COM1	0x3F8
 #define SERIAL_DATA_PORT(base)		(base)
 #define SERIAL_FIFO_CMD_PORT(base)	(base + 2)
@@ -37,6 +41,16 @@ extern void outb(unsigned short port, unsigned char data);
 extern unsigned char inb(unsigned short port);
 // unsigned short inw(unsigned short port); 
 // unsigned int inb(unsigned short port);
+
+//defined in src/boot.s
+// waits for an io to finish.
+extern void io_wait();
+
+
+extern void io_disableInterrupts();
+extern void io_enableInterrupts();
+
+char readKeyboard();
 
 
 #endif

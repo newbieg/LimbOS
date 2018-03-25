@@ -17,6 +17,8 @@
 // Currently only used for debugging purposes.
 extern void halt();
 void reboot();
+extern int pushRegs(int list[]);
+void printRegs();
 
 
 

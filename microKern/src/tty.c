@@ -39,7 +39,7 @@ void vga_init()
 	c_pos = 0;	
 	terminal_x = 0;
 	terminal_y = 0;
-	terminal_color = vga_displayColor(VGA_COLOR_BLACK, VGA_COLOR_WHITE);
+	terminal_color = vga_displayColor(VGA_COLOR_BLACK, VGA_COLOR_LIGHT_GREY);
 	vga_cls();
 }
 
@@ -107,6 +107,10 @@ void vga_putchar(const char c)
 		terminal_x = 0;
 		terminal_y ++;
 	} // should implement other esc sequences like \t for tab
+	else if(c == 0)
+	{
+		// do nothing
+	}
 	else
 	{
 		vga_putEntryAt(c, terminal_color, terminal_x, terminal_y);

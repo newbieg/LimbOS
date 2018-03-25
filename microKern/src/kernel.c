@@ -3,6 +3,8 @@
 #include <io.h>
 
 #include <system.h>
+#include <kbd_map.h>
+
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
@@ -15,6 +17,7 @@ void reboot()
 		good = inb(0x02);
 	}
 	outb(0x64, 0xFE);
+	halt();
 }
 
 
@@ -25,16 +28,11 @@ int kernel_main()
 	
 	vga_writeString("Hello World");
 	vga_putchar('\n');
-	/// Testing for correct decimal outputs
-	vga_writeDec(-12);
-	vga_writeDec(-123);
-	vga_writeDec(-1234);
-	vga_writeDec(-12345);
-	vga_writeDec(-1234567890); // lucky that 32 bit allows 10 digits length.
+	printRegs();
 	vga_putchar('\n');
-
+	/// Testing for correct decimal outputs
+	vga_writeDec(-12345);
 	vga_logEntry("Log Entry:", "Happy new OS", LOG_NEUTRAL);
-
 	vga_writeString("Testing window scrolling...");
 
 	/*
@@ -79,20 +77,22 @@ int kernel_main()
 
 	vga_logEntry("Warning:", "No Keyboard found. Press Enter to Continue.", LOG_WARN);
 
-	int charlie = 1;
-	for(int i = 1; i < 100; i ++)
+
+
+	vga_putchar('\n');
+	printRegs();
+//	io_disableInterupts();
+//	io_enableInterupts();
+
+//	io_wait();
+
+	while(true)
 	{
-	
-		charlie ++;
-		vga_writeDec(charlie);
-		vga_writeString("and\n");
+		char k = getKey();
+		vga_putchar(k);
 
 	}
-	
 
-	vga_writeString("NOPE!");
-	
-	// Function that reboots the computer.
-	reboot();
+	halt();
 	return 0;
 }

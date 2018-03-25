@@ -9,10 +9,14 @@ void serial_confBaudRate(unsigned short com, unsigned short divisor)
 }
 
 
-void serial_condLine(unsined short com)
+void serial_condLine(unsigned short com)
 {
-	outb(SERIAL_LINE_CD_PORT(com), 0x03);
+	outb(SERIAL_LINE_CMD_PORT(com), 0x03);
 }
 
 
+char readKeyboard()
+{
+	return inb(0x60);
+}
 

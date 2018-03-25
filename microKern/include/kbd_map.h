@@ -1,0 +1,12 @@
+enum KEY
+{
+	null,ESC, N1,N2,N3,N4,N5,N6,N7,N8,N9,N0,MINUS,EQU,BKSP,
+	TAB, q,w,e,r,t,y,u,i,o,p,BRACKET_OPEN,BRACKET_CLOSE,BKSLASH,
+	CAPS, a,s,d,f,g,h,j,k,l,SEMICOLON,APOSTROPHE,ENTER,
+	LEFT_SHIFT, z,x,c,v,b,n,m,COMMA, PERIOD, FORE_SLASH, RIGHT_SHIFT,
+	LEFT_CTRL, FUNC, ACTION, LEFT_ALT, SPACE, RIGHT_ALT, RIGHT_CLICK, RIGHT_CTRL
+
+};
+
+char translate(enum KEY numberToChar);
+char getKey();
