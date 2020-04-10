@@ -17,9 +17,13 @@ int kernel_main()
 	vga_putchar('\n');
 	/// Testing for correct decimal outputs
 	vga_writeDec(-12);
+	vga_putchar('\n');
 	vga_writeDec(-123);
+	vga_putchar('\n');
 	vga_writeDec(-1234);
+	vga_putchar('\n');
 	vga_writeDec(-12345);
+	vga_putchar('\n');
 	vga_writeDec(-1234567890);
 	vga_putchar('\n');
 
@@ -27,20 +31,21 @@ int kernel_main()
 
 	vga_writeString("Testing window scrolling...");
 
-	/* // This is very slow. I tried commenting out the lines that
+	/* // This is comparatively very slow. I tried commenting out the lines that
 		// actually output to screen and the rest of the algorithm
 		// took less than a second (though there was a slight pause).
 		// I need to figure out a way to speed up screen output. 
 		// Currently thinking of ways to output entire pages at a time
 		// if it's detected that the screen is very busy.
 		// Might also figure out how to write memcpy in assembly. 
-	for(unsigned int i = 0; i < 5000; i ++)
+		*/
+	for(unsigned int i = 0; i < 5000; i += 5)
 	{
 		vga_putchar('\n');
 		vga_writeBinary(i);
 		
 	}
-	*/
+	/**/
 	vga_putchar('\n');
 	vga_writeHex(0x60789);
 	vga_putchar('\n');

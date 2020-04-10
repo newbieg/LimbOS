@@ -5,7 +5,7 @@ CLINKERFLAGS=-ffreestanding -O2 -nostdlib
 CC=i686-elf-gcc
 AS=i686-elf-as
 
-all: build iso clean run
+all: build iso run
 
 build:
 	$(AS) src/boot.s -o boot.o
@@ -31,4 +31,4 @@ run:
 	qemu-system-i386 -cdrom myos.iso
 
 clean:
-	-rm *.o *.h.gch
+	-rm *.o *.h.gch *.bin *.iso

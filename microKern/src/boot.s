@@ -76,6 +76,7 @@ halt:
 // one ASM file...
 // void outb(unsigned short port_Number, unsigned char output_Data)
 .global outb
+.type outb, @function
 outb:
 	mov 8(%esp), %al
 	mov 4(%esp), %dx
@@ -86,6 +87,7 @@ outb:
 // move the address into dx
 // then read a byte from that address.
 .global inb
+.type inb, @function
 inb:
 	mov 4(%esp), %dx
 	in %dx, %al
@@ -95,17 +97,20 @@ inb:
 
 // saw this in another's code, tried to translate it but not working as expected...
 .global io_wait
+.type io_wait, function
 io_wait:
 //	outb $0x80, %al
 //	outb $0x80, %al
 	ret
 
 .global io_disableInterrupts
+.type io_disableInterrupts, @function
 io_disableInterrupts:
 	cli
 	ret
 
 .global io_enableInterrupts
+.type io_enableInterrupts, @function
 io_enableInterrupts:
 	sti
 	ret
@@ -114,6 +119,7 @@ io_enableInterrupts:
 // declared in /src/system.h
 //int* pushRegs(int[10] list) // returns pointer to int array conating register vals
 .global pushRegs
+.type pushRegs, @function
 pushRegs:
 	push %ebp //; save base pointer
 	mov %ebx, %edi
@@ -131,6 +137,7 @@ pushRegs:
 	ret
 
 .global getCPUID
+.type getCPUID, @function
 getCPUID:
 	xor %eax, %eax
 	cpuid
@@ -399,6 +406,7 @@ isr_NE 253
 isr_NE 254
 isr_NE 255
 */
+
 
 .size _start, . - _start 
 

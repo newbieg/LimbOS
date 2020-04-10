@@ -21,6 +21,66 @@ char translate(enum KEY num)
 		case N3:
 			return '3';
 		break;
+		case N4:
+			return '4';
+		break;
+		case N5:
+			return '5';
+		break;
+		case N6:
+			return '6';
+		break;
+		case N7:
+			return '7';
+		break;
+		case N8:
+			return '8';
+		break;
+		case N9:
+			return '9';
+		break;
+		case N0:
+			return '0';
+		break;
+		case MINUS:
+			return '-';
+		break;
+		case EQU:
+			return '=';
+		break;
+		case BKSP:
+			return -2;
+		break;
+		case q:
+			return 'q';
+		break;
+		case w:
+			return 'w';
+		break;
+		case e:
+			return 'e';
+		break;
+		case r:
+			return 'r';
+		break;
+		case t:
+			return 't';
+		break;
+		case y:
+			return 'y';
+		break;
+		case u:
+			return 'u';
+		break;
+		case i:
+			return 'i';
+		break;
+		case o:
+			return 'o';
+		break;
+		case p:
+			return 'p';
+		break;
 		default:
 			return 'x';
 		
