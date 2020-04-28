@@ -1,11 +1,12 @@
-#include <string.h>
-#include <math.h>
+#include <libk/string.h>
+#include <libk/math.h>
 
 char* itoa(const int number, char* str, size_t base)
 {
-	if(number == 0)
+	if(number == 0 || number == (int) 0b10000000000000000000000000000000)
         {
 		str[0] = '0';
+		str[1] = '\0';
         }
 	else
 	{

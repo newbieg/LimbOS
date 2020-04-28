@@ -3,7 +3,9 @@
 
 
 /* A list of key functions that the kernel will need to use in order to
- * communicate with the system.
+ * communicate with the system. The source files will be found in the 
+ * src folder. The src folder should be used solely for kernel-
+ * permision code. (System Calls).
  */
 
 #include <stdbool.h>
@@ -14,20 +16,10 @@
 // An Assembly call to hlt, defined in boot.s
 // Currently only used for debugging purposes.
 extern void halt();
+void reboot();
+extern int pushRegs(int list[]);
+void printRegs();
 
-
-// return a value from port, may eventually export to full asm.
-static inline unsigned char in_b(const unsigned short port)
-{
-	unsigned char ret;
-	asm volatile ("outb %1, %0" : "=a"(ret) : "Nd"(port));
-	return ret;
-}
-// send value into port
-static inline void out_b(const unsigned short port, const unsigned char val)
-{
-	asm volatile ( "outb %0, %1" : : "a"(val), "Nd"(port));
-}
 
 
 // void* memcpy(char* dest, char* src, size_t length);

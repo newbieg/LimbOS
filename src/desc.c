@@ -1,5 +1,3 @@
-/* gdt source file, init_gdt() is located in the kernel. */
-
 #include <desc.h>
 
 

@@ -3,8 +3,9 @@
  * 
  * */
 #include "tty.h" 
-#include "math.h" // abs()
-#include "string.h" // strlen()
+#include <libk/math.h> // abs()
+#include <libk/string.h> // strlen()
+#include "io.h"
 
 const size_t TABSIZE = 4;
 
@@ -12,6 +13,7 @@ uint16_t *terminal_buffer;
 uint16_t terminal_x;
 uint16_t terminal_y;
 uint8_t  terminal_color;
+unsigned int c_pos;
 
 const size_t VGA_WIDTH = 80;
 const size_t VGA_HEIGHT = 25;
@@ -34,10 +36,11 @@ uint16_t vga_entry(unsigned char text, uint8_t color)
 // call once to initialize the tty terminal with a blank screen
 void vga_init()
 {
-	vga_cls();	
+	c_pos = 0;	
 	terminal_x = 0;
 	terminal_y = 0;
-	terminal_color = vga_displayColor(VGA_COLOR_BLACK, VGA_COLOR_WHITE);
+	terminal_color = vga_displayColor(VGA_COLOR_BLACK, VGA_COLOR_LIGHT_GREY);
+	vga_cls();
 }
 
 // clear the screen
@@ -54,9 +57,7 @@ void vga_cls()
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
-	terminal_buffer = (uint16_t *) 0XB8000;
-	terminal_x = 0;
-	terminal_y = 0;
+	vga_setCursorToTop();
 }
 
 // print a single character data to the screen at pos 
@@ -77,6 +78,10 @@ void vga_splashLine(const size_t lineNumber)
 void vga_setCursorToTop()
 {
 	terminal_buffer = (uint16_t *) 0xB8000;
+	terminal_x = 0;
+	terminal_y = 0;
+	c_pos = 0;
+	vga_moveCursor(c_pos);
 }
 
 void vga_scroll(size_t lineCount)
@@ -90,6 +95,8 @@ void vga_scroll(size_t lineCount)
 	{
 		vga_splashLine(VGA_HEIGHT - i);
 	}
+	c_pos = terminal_y * VGA_WIDTH;
+	vga_moveCursor(c_pos);
 	
 }
 
@@ -100,6 +107,10 @@ void vga_putchar(const char c)
 		terminal_x = 0;
 		terminal_y ++;
 	} // should implement other esc sequences like \t for tab
+	else if(c == 0)
+	{
+		// do nothing
+	}
 	else
 	{
 		vga_putEntryAt(c, terminal_color, terminal_x, terminal_y);
@@ -115,6 +126,9 @@ void vga_putchar(const char c)
 		vga_scroll(1);
 		terminal_y --;
 	}
+	c_pos = terminal_y * VGA_WIDTH + terminal_x;
+	vga_moveCursor(c_pos);
+
 }
 
 void vga_writebuffer(const char* data, const int size)
@@ -148,7 +162,7 @@ void vga_writeString(const char* str)
 
 void vga_writeDec(const int number)
 {
-	char text[12];
+	char text[19];
 	itoa(number, text, 10);
 	vga_writeString(text);
 }
@@ -165,8 +179,8 @@ void vga_writeHex(const unsigned int number)
 void vga_writeBinary(const unsigned int number)
 {
 	vga_writeString("0b");
-	char output[133];
-	uitoa(number, output, 2);
+	char output[35];
+	itoa(number, output, 2);
 	vga_writeString(output);
 }
 
@@ -188,7 +202,7 @@ void vga_logEntry(char* label, char* string, enum logWarnLevel emotive)
 	else if(emotive == LOG_NEUTRAL)
 		terminal_color = vga_displayColor(VGA_COLOR_WHITE, VGA_COLOR_LIGHT_BLUE);
 
-	vga_splashLine(terminal_y);
+//	vga_splashLine(terminal_y);
 	vga_writeString(label);
 	if(emotive == LOG_WARN)
 		terminal_color = vga_displayColor(VGA_COLOR_BLACK, VGA_COLOR_LIGHT_GREY);
@@ -213,6 +227,7 @@ void vga_setTextColor(enum vga_color txtColor)
 }
 
 
+
 /*
 char* reverseString(char* str)
 {
@@ -234,3 +249,16 @@ char* reverseString(char* str)
 	return str;
 }
 */
+ /* Think of pos as a one-D representation of a two-D array.
+  * y * width + x is the general idea. Not a fully protected function
+  * user must beware, do not overflow your position buffer.
+  * */
+
+void vga_moveCursor(unsigned short pos)
+{
+	outb(FB_CMD_PORT, FB_CMD_HIGHBYTE);
+	outb(FB_DATA_PORT, ((pos >> 8) & 0x00FF));
+	outb(FB_CMD_PORT, FB_CMD_LOWBYTE);
+	outb(FB_DATA_PORT, pos & 0x00FF);
+}
+
